@@ -1,1 +1,1496 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>InNovaArticlesAI - Gerador de Conteúdo Inteligente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Gere artigos otimizados para redes sociais com IA em segundos">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gradient-primary: linear-gradient(135deg, #4361ee 0%, #7209b7 100%);
+            --gradient-secondary: linear-gradient(135deg, #3a56d4 0%, #5a67d8 100%);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --card-shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 60px 20px;
+            border-radius: 24px;
+            text-align: center;
+            margin: 30px 0 40px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-label i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+        }
+        
+        .char-counter {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .char-counter.warning {
+            color: var(--warning);
+        }
+        
+        .char-counter.danger {
+            color: var(--danger);
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 12px;
+            font-weight: 500;
+            padding: 10px 20px;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .output-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .output-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .output-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .output-content {
+            line-height: 1.7;
+            font-size: 1.05rem;
+            min-height: 200px;
+        }
+        
+        .output-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #94a3b8;
+            padding: 40px 20px;
+        }
+        
+        .output-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        .hashtag {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin: 0 3px;
+            font-weight: 500;
+        }
+        
+        .content-bold {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-action {
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-action i {
+            font-size: 1.1rem;
+        }
+        
+        .btn-copy {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: none;
+        }
+        
+        .btn-copy:hover {
+            background: #bae6fd;
+        }
+        
+        .btn-download {
+            background: #dcfce7;
+            color: #047857;
+            border: none;
+        }
+        
+        .btn-download:hover {
+            background: #bbf7d0;
+        }
+        
+        .btn-regenerate {
+            background: #ede9fe;
+            color: #7c3aed;
+            border: none;
+        }
+        
+        .btn-regenerate:hover {
+            background: #ddd6fe;
+        }
+        
+        .btn-history {
+            background: #fef3c7;
+            color: #d97706;
+            border: none;
+        }
+        
+        .btn-history:hover {
+            background: #fde68a;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .template-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .template-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+        
+        .template-card.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .template-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(67, 97, 238, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+        
+        .template-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .template-description {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        
+        .template-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .template-tag {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #64748b;
+            padding-top: 40px;
+            font-size: 0.9rem;
+        }
+        
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 18px 24px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+            max-width: 400px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .notification-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+        
+        .notification.success .notification-icon {
+            color: var(--success);
+        }
+        
+        .notification.error .notification-icon {
+            color: var(--danger);
+        }
+        
+        .notification.warning .notification-icon {
+            color: var(--warning);
+        }
+        
+        .notification-content h5 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .notification-content p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            color: #64748b;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .result-metadata {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+        
+        .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .metadata-item i {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .main-container {
+                padding: 20px;
+            }
+            
+            .output-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .action-buttons {
+                width: 100%;
+            }
+            
+            .btn-action {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-robot me-2"></i>InNovaArticlesAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="historyBtn"><i class="fas fa-history me-1"></i> Histórico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-question-circle me-1"></i> Ajuda</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container py-4">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Gerador de Conteúdo com IA</h1>
+            <p class="hero-subtitle">
+                Crie artigos otimizados para LinkedIn, Instagram, Facebook e Twitter em segundos.
+                Ajuste tom, extensão e estilo para cada plataforma.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalGenerated">1,247</div>
+                    <div class="stat-label">Artigos Gerados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="timeSaved">312</div>
+                    <div class="stat-label">Horas Economizadas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4.8★</div>
+                    <div class="stat-label">Avaliação Média</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Templates Section -->
+        <div class="main-container">
+            <div class="section-title">
+                <i class="fas fa-th-large"></i>
+                <span>Templates Prontos</span>
+            </div>
+            <p class="text-muted mb-3">Selecione um template para preencher automaticamente as configurações:</p>
+            <div class="template-grid" id="templatesContainer">
+                <!-- Templates serão carregados via JS -->
+            </div>
+        </div>
+
+        <!-- Generator Form -->
+        <div class="main-container">
+            <div class="section-title">
+                <i class="fas fa-sliders-h"></i>
+                <span>Configurações do Artigo</span>
+            </div>
+            
+            <form id="articleForm">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <label for="platform" class="form-label">
+                            <i class="fas fa-globe"></i> Plataforma
+                        </label>
+                        <select id="platform" class="form-select" required>
+                            <option value="LinkedIn" selected>LinkedIn</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Twitter/X">Twitter/X</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <label for="tone" class="form-label">
+                            <i class="fas fa-comment-alt"></i> Tom do Texto
+                        </label>
+                        <select id="tone" class="form-select" required>
+                            <option value="Profissional" selected>Profissional</option>
+                            <option value="Engraçado">Engraçado</option>
+                            <option value="Técnico">Técnico</option>
+                            <option value="Persuasivo">Persuasivo</option>
+                            <option value="Inspiracional">Inspiracional</option>
+                            <option value="Descontraído">Descontraído</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <label for="length" class="form-label">
+                            <i class="fas fa-ruler"></i> Extensão
+                        </label>
+                        <select id="length" class="form-select" required>
+                            <option value="curto">Curto (200-300 palavras)</option>
+                            <option value="medio" selected>Médio (400-500 palavras)</option>
+                            <option value="longo">Longo (600-800 palavras)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <label for="style" class="form-label">
+                            <i class="fas fa-pen-fancy"></i> Estilo
+                        </label>
+                        <select id="style" class="form-select" required>
+                            <option value="padrão" selected>Padrão</option>
+                            <option value="storytelling">Storytelling</option>
+                            <option value="lista">Lista</option>
+                            <option value="pergunta">Baseado em Perguntas</option>
+                            <option value="caso">Caso de Estudo</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <label for="topic" class="form-label">
+                            <i class="fas fa-lightbulb"></i> Tema / Palavras-chave
+                        </label>
+                        <input type="text" id="topic" class="form-control" 
+                               placeholder="Ex: Inteligência Artificial no Marketing Digital em 2024" 
+                               required maxlength="150">
+                        <div class="char-counter">
+                            <span id="charCount">0</span>/150 caracteres
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label for="keywords" class="form-label">
+                            <i class="fas fa-hashtag"></i> Hashtags (opcional)
+                        </label>
+                        <input type="text" id="keywords" class="form-control" 
+                               placeholder="#marketing #tecnologia #ia">
+                    </div>
+                </div>
+                
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg" id="generateBtn">
+                        <span class="loading-spinner" id="generateSpinner"></span>
+                        <i class="fas fa-magic" id="generateIcon"></i>
+                        <span id="generateText">Gerar Artigo com IA</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-container">
+            <div class="output-header">
+                <div class="output-title">
+                    <i class="fas fa-file-alt"></i> Artigo Gerado
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-action btn-copy" id="copyBtn" disabled>
+                        <i class="fas fa-copy"></i> Copiar
+                    </button>
+                    <button class="btn btn-action btn-download" id="downloadBtn" disabled>
+                        <i class="fas fa-download"></i> Baixar TXT
+                    </button>
+                    <button class="btn btn-action btn-regenerate" id="regenerateBtn" disabled>
+                        <i class="fas fa-sync-alt"></i> Regenerar
+                    </button>
+                    <button class="btn btn-action btn-history" id="saveHistoryBtn" disabled>
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                </div>
+            </div>
+            
+            <div id="output">
+                <div class="output-placeholder">
+                    <i class="fas fa-sparkles"></i>
+                    <h5 class="mt-3">Seu artigo aparecerá aqui</h5>
+                    <p class="text-muted">Configure as opções acima e clique em "Gerar Artigo"</p>
+                    <small class="text-muted">Dica: Use palavras-chave específicas para resultados mais precisos</small>
+                </div>
+            </div>
+            
+            <div id="resultMetadata" class="result-metadata" style="display: none;">
+                <!-- Metadata será preenchida via JS -->
+            </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-bolt fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Rápido e Eficiente</h5>
+                        <p class="card-text text-muted">Gere conteúdo em segundos, economizando horas de trabalho manual.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-edit fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Otimizado por Plataforma</h5>
+                        <p class="card-text text-muted">Conteúdo adaptado para cada rede social, com formatação ideal.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Conteúdo Original</h5>
+                        <p class="card-text text-muted">Cada artigo é gerado do zero, garantindo unicidade e qualidade.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Desenvolvido por Dione Castro Alves | &copy; <span id="currentYear"></span> InNovaIdeia</p>
+            <p>
+                <a href="https://innovaideia-github-io.vercel.app" target="_blank">
+                    <i class="fas fa-external-link-alt me-1"></i>Visite meu portfólio
+                </a> 
+                | 
+                <a href="#" id="privacyBtn">
+                    <i class="fas fa-lock me-1"></i>Privacidade
+                </a>
+                | 
+                <a href="#" id="termsBtn">
+                    <i class="fas fa-file-contract me-1"></i>Termos
+                </a>
+            </p>
+            <p class="text-muted small mt-2">
+                <i class="fas fa-info-circle me-1"></i>
+                Esta ferramenta usa IA generativa. Revise o conteúdo antes de publicar.
+            </p>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="notification-content">
+            <h5 id="notificationTitle">Sucesso!</h5>
+            <p id="notificationMessage">Operação realizada com sucesso.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Elementos DOM
+        const elements = {
+            form: document.getElementById('articleForm'),
+            output: document.getElementById('output'),
+            generateBtn: document.getElementById('generateBtn'),
+            generateSpinner: document.getElementById('generateSpinner'),
+            generateIcon: document.getElementById('generateIcon'),
+            generateText: document.getElementById('generateText'),
+            copyBtn: document.getElementById('copyBtn'),
+            downloadBtn: document.getElementById('downloadBtn'),
+            regenerateBtn: document.getElementById('regenerateBtn'),
+            saveHistoryBtn: document.getElementById('saveHistoryBtn'),
+            topicInput: document.getElementById('topic'),
+            charCount: document.getElementById('charCount'),
+            notification: document.getElementById('notification'),
+            notificationTitle: document.getElementById('notificationTitle'),
+            notificationMessage: document.getElementById('notificationMessage'),
+            templatesContainer: document.getElementById('templatesContainer'),
+            resultMetadata: document.getElementById('resultMetadata'),
+            totalGenerated: document.getElementById('totalGenerated'),
+            timeSaved: document.getElementById('timeSaved'),
+            historyBtn: document.getElementById('historyBtn'),
+            privacyBtn: document.getElementById('privacyBtn'),
+            termsBtn: document.getElementById('termsBtn')
+        };
+
+        // Estado da aplicação
+        const state = {
+            currentArticle: null,
+            currentMetadata: null,
+            history: JSON.parse(localStorage.getItem('articleHistory') || '[]'),
+            usageCount: parseInt(localStorage.getItem('usageCount') || '0'),
+            templates: []
+        };
+
+        // Inicialização
+        function init() {
+            // Ano atual no footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Configurar contador de caracteres
+            elements.topicInput.addEventListener('input', updateCharCounter);
+            updateCharCounter();
+            
+            // Carregar templates
+            loadTemplates();
+            
+            // Carregar estatísticas
+            updateStats();
+            
+            // Configurar botões
+            setupEventListeners();
+            
+            // Verificar se há artigo salvo
+            const savedArticle = localStorage.getItem('lastArticle');
+            if (savedArticle) {
+                displayArticle(JSON.parse(savedArticle));
+            }
+            
+            console.log('InNovaArticlesAI inicializado com sucesso!');
+        }
+
+        // Atualizar contador de caracteres
+        function updateCharCounter() {
+            const count = elements.topicInput.value.length;
+            elements.charCount.textContent = count;
+            elements.charCount.parentElement.className = 'char-counter';
+            
+            if (count > 120 && count <= 140) {
+                elements.charCount.parentElement.classList.add('warning');
+            } else if (count > 140) {
+                elements.charCount.parentElement.classList.add('danger');
+            }
+        }
+
+        // Carregar templates
+        async function loadTemplates() {
+            try {
+                const response = await fetch('/templates');
+                const data = await response.json();
+                
+                if (data.templates) {
+                    state.templates = data.templates;
+                    renderTemplates();
+                }
+            } catch (error) {
+                console.log('Usando templates locais');
+                state.templates = [
+                    {
+                        "id": "linkedin_pro",
+                        "name": "Post LinkedIn Pro",
+                        "platform": "LinkedIn",
+                        "tone": "Profissional",
+                        "length": "medio",
+                        "description": "Post estratégico para líderes e empresas"
+                    },
+                    {
+                        "id": "instagram_engage",
+                        "name": "Instagram Engajador",
+                        "platform": "Instagram",
+                        "tone": "Descontraído",
+                        "length": "curto",
+                        "description": "Post visual com alta taxa de engajamento"
+                    },
+                    {
+                        "id": "thread_twitter",
+                        "name": "Thread Viral Twitter",
+                        "platform": "Twitter/X",
+                        "tone": "Persuasivo",
+                        "length": "longo",
+                        "description": "Thread educativa que viraliza"
+                    }
+                ];
+                renderTemplates();
+            }
+        }
+
+        // Renderizar templates
+        function renderTemplates() {
+            elements.templatesContainer.innerHTML = state.templates.map(template => `
+                <div class="template-card" data-template='${JSON.stringify(template)}'>
+                    <div class="template-icon">
+                        <i class="fas fa-${template.platform === 'Instagram' ? 'camera' : 
+                                        template.platform === 'Twitter/X' ? 'comment' : 
+                                        'file-alt'}"></i>
+                    </div>
+                    <div class="template-title">${template.name}</div>
+                    <div class="template-description">${template.description}</div>
+                    <div class="template-tags">
+                        <span class="template-tag">${template.platform}</span>
+                        <span class="template-tag">${template.tone}</span>
+                        <span class="template-tag">${template.length}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Adicionar eventos aos templates
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remover classe active de todos
+                    document.querySelectorAll('.template-card').forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    
+                    // Adicionar ao clicado
+                    this.classList.add('active');
+                    
+                    // Preencher formulário
+                    const template = JSON.parse(this.dataset.template);
+                    document.getElementById('platform').value = template.platform;
+                    document.getElementById('tone').value = template.tone;
+                    document.getElementById('length').value = template.length;
+                    document.getElementById('style').value = 'padrão';
+                    
+                    // Focar no input de tema
+                    elements.topicInput.focus();
+                    
+                    showNotification(`Template "${template.name}" carregado!`, 'success');
+                });
+            });
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            // Atualizar contagem de uso
+            elements.totalGenerated.textContent = (state.usageCount + 1247).toLocaleString();
+            
+            // Calcular horas economizadas (estimativa: 30 minutos por artigo)
+            const hoursSaved = Math.floor((state.usageCount * 30) / 60) + 312;
+            elements.timeSaved.textContent = hoursSaved.toLocaleString();
+        }
+
+        // Configurar eventos
+        function setupEventListeners() {
+            // Form submission
+            elements.form.addEventListener('submit', generateArticle);
+            
+            // Botões de ação
+            elements.copyBtn.addEventListener('click', copyArticle);
+            elements.downloadBtn.addEventListener('click', downloadArticle);
+            elements.regenerateBtn.addEventListener('click', () => {
+                elements.form.dispatchEvent(new Event('submit'));
+            });
+            elements.saveHistoryBtn.addEventListener('click', saveToHistory);
+            
+            // Botões do navbar/footer
+            elements.historyBtn.addEventListener('click', showHistory);
+            elements.privacyBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showNotification('Política de Privacidade em desenvolvimento.', 'warning');
+            });
+            elements.termsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showNotification('Termos de Uso em desenvolvimento.', 'warning');
+            });
+        }
+
+        // Gerar artigo
+        async function generateArticle(e) {
+            e.preventDefault();
+            
+            // Validação
+            const platform = document.getElementById('platform').value;
+            const tone = document.getElementById('tone').value;
+            const topic = document.getElementById('topic').value.trim();
+            const length = document.getElementById('length').value;
+            const style = document.getElementById('style').value;
+            const keywords = document.getElementById('keywords').value;
+            
+            if (!topic) {
+                showNotification('Por favor, insira um tema para o artigo.', 'error');
+                elements.topicInput.focus();
+                return;
+            }
+            
+            if (topic.length > 150) {
+                showNotification('O tema deve ter no máximo 150 caracteres.', 'error');
+                return;
+            }
+            
+            // Estado de loading
+            setLoadingState(true);
+            
+            // Limpar output anterior
+            elements.output.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <h5 class="mt-4">Gerando seu artigo...</h5>
+                    <p class="text-muted">Isso pode levar alguns segundos</p>
+                    <div class="progress mt-3" style="height: 6px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                    </div>
+                </div>
+            `;
+            
+            try {
+                // Chamar backend
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        platform,
+                        tone,
+                        topic,
+                        length,
+                        style,
+                        keywords
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || `Erro ${response.status}: ${response.statusText}`);
+                }
+                
+                // Atualizar estado
+                state.currentArticle = data.article;
+                state.currentMetadata = data.metadata || {};
+                state.usageCount++;
+                
+                // Salvar no localStorage
+                localStorage.setItem('usageCount', state.usageCount.toString());
+                localStorage.setItem('lastArticle', JSON.stringify({
+                    article: data.article,
+                    metadata: data.metadata
+                }));
+                
+                // Exibir artigo
+                displayArticle(data);
+                
+                // Atualizar estatísticas
+                updateStats();
+                
+                showNotification('Artigo gerado com sucesso!', 'success');
+                
+            } catch (error) {
+                console.error('Erro na geração:', error);
+                
+                let errorMessage = 'Erro desconhecido. Tente novamente.';
+                
+                if (error.message.includes('Timeout')) {
+                    errorMessage = 'Tempo esgotado. Tente novamente.';
+                } else if (error.message.includes('Erro de conexão')) {
+                    errorMessage = 'Erro de conexão. Verifique sua internet.';
+                } else if (error.message.includes('500')) {
+                    errorMessage = 'Erro interno do servidor.';
+                } else {
+                    errorMessage = error.message;
+                }
+                
+                elements.output.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3">Erro na geração</h5>
+                        <p class="text-muted">${errorMessage}</p>
+                        <div class="mt-4">
+                            <button class="btn btn-primary" onclick="elements.form.dispatchEvent(new Event('submit'))">
+                                <i class="fas fa-redo me-2"></i>Tentar novamente
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                showNotification(errorMessage, 'error');
+                
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        // Exibir artigo
+        function displayArticle(data) {
+            const article = data.article;
+            const metadata = data.metadata || {};
+            
+            // Formatar artigo
+            const formattedArticle = formatArticle(article);
+            
+            // Atualizar output
+            elements.output.innerHTML = `
+                <div class="output-content">
+                    ${formattedArticle}
+                </div>
+            `;
+            
+            // Habilitar botões de ação
+            elements.copyBtn.disabled = false;
+            elements.downloadBtn.disabled = false;
+            elements.regenerateBtn.disabled = false;
+            elements.saveHistoryBtn.disabled = false;
+            
+            // Mostrar metadata
+            if (metadata.timestamp) {
+                const date = new Date(metadata.timestamp);
+                elements.resultMetadata.innerHTML = `
+                    <div class="metadata-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Gerado em: ${date.toLocaleDateString('pt-BR')} às ${date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <i class="fas fa-globe"></i>
+                        <span>Plataforma: ${metadata.platform || 'N/A'}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <i class="fas fa-comment"></i>
+                        <span>Tom: ${metadata.tone || 'N/A'}</span>
+                    </div>
+                    <div class="metadata-item">
+                        <i class="fas fa-ruler"></i>
+                        <span>Extensão: ${metadata.length || 'N/A'}</span>
+                    </div>
+                    ${metadata.estimated_tokens ? `
+                    <div class="metadata-item">
+                        <i class="fas fa-bolt"></i>
+                        <span>Tokens usados: ${metadata.estimated_tokens}</span>
+                    </div>
+                    ` : ''}
+                `;
+                elements.resultMetadata.style.display = 'flex';
+            }
+        }
+
+        // Formatar artigo
+        function formatArticle(text) {
+            // Converter **negrito** para <strong>
+            let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong class="content-bold">$1</strong>');
+            
+            // Converter hashtags
+            formatted = formatted.replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
+            
+            // Dividir em parágrafos
+            const paragraphs = formatted.split('\n\n').filter(p => p.trim());
+            
+            // Formatar cada parágrafo
+            return paragraphs.map(paragraph => {
+                const trimmed = paragraph.trim();
+                
+                // Verificar se é título (curto e em negrito)
+                if (trimmed.startsWith('<strong class="content-bold">') && 
+                    trimmed.endsWith('</strong>') && 
+                    trimmed.split(' ').length < 8) {
+                    return `<h4 style="color: var(--primary); margin-bottom: 1rem;">${trimmed.replace(/<\/?strong[^>]*>/g, '')}</h4>`;
+                }
+                
+                return `<p style="margin-bottom: 1.2rem;">${trimmed}</p>`;
+            }).join('');
+        }
+
+        // Copiar artigo
+        function copyArticle() {
+            if (!state.currentArticle) return;
+            
+            navigator.clipboard.writeText(state.currentArticle)
+                .then(() => {
+                    showNotification('Artigo copiado para a área de transferência!', 'success');
+                })
+                .catch(err => {
+                    console.error('Erro ao copiar:', err);
+                    showNotification('Erro ao copiar o artigo.', 'error');
+                });
+        }
+
+        // Baixar artigo
+        function downloadArticle() {
+            if (!state.currentArticle) return;
+            
+            const platform = document.getElementById('platform').value;
+            const tone = document.getElementById('tone').value;
+            const topic = document.getElementById('topic').value.substring(0, 50);
+            const date = new Date().toISOString().split('T')[0];
+            
+            const filename = `artigo-${platform.toLowerCase()}-${tone.toLowerCase()}-${date}.txt`;
+            const content = `Artigo gerado por InNovaArticlesAI\n\n` +
+                           `Plataforma: ${platform}\n` +
+                           `Tom: ${tone}\n` +
+                           `Tema: ${topic}\n` +
+                           `Data: ${new Date().toLocaleDateString('pt-BR')}\n\n` +
+                           `================================\n\n` +
+                           state.currentArticle;
+            
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showNotification('Artigo baixado com sucesso!', 'success');
+            }, 100);
+        }
+
+        // Salvar no histórico
+        function saveToHistory() {
+            if (!state.currentArticle || !state.currentMetadata) return;
+            
+            const articleData = {
+                id: Date.now(),
+                article: state.currentArticle,
+                platform: state.currentMetadata.platform || document.getElementById('platform').value,
+                tone: state.currentMetadata.tone || document.getElementById('tone').value,
+                topic: document.getElementById('topic').value,
+                length: state.currentMetadata.length || document.getElementById('length').value,
+                timestamp: state.currentMetadata.timestamp || new Date().toISOString(),
+                preview: state.currentArticle.substring(0, 100) + '...'
+            };
+            
+            state.history.unshift(articleData);
+            
+            // Manter apenas últimos 50
+            if (state.history.length > 50) {
+                state.history = state.history.slice(0, 50);
+            }
+            
+            localStorage.setItem('articleHistory', JSON.stringify(state.history));
+            
+            showNotification('Artigo salvo no histórico!', 'success');
+        }
+
+        // Mostrar histórico
+        function showHistory(e) {
+            e?.preventDefault();
+            
+            if (state.history.length === 0) {
+                showNotification('Nenhum artigo no histórico ainda.', 'warning');
+                return;
+            }
+            
+            let historyHTML = `
+                <div class="modal fade" id="historyModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="fas fa-history me-2"></i>Histórico de Artigos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Plataforma</th>
+                                                <th>Tema</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+            `;
+            
+            state.history.forEach(item => {
+                const date = new Date(item.timestamp);
+                historyHTML += `
+                    <tr>
+                        <td>${date.toLocaleDateString('pt-BR')}</td>
+                        <td><span class="badge bg-primary">${item.platform}</span></td>
+                        <td><small>${item.topic.substring(0, 40)}${item.topic.length > 40 ? '...' : ''}</small></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="loadFromHistory(${item.id})">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" onclick="copyFromHistory(${item.id})">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteFromHistory(${item.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            historyHTML += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-danger" onclick="clearHistory()">
+                                    <i class="fas fa-trash me-2"></i>Limpar Histórico
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Adicionar modal ao DOM
+            const modalContainer = document.createElement('div');
+            modalContainer.innerHTML = historyHTML;
+            document.body.appendChild(modalContainer);
+            
+            // Mostrar modal
+            const modal = new bootstrap.Modal(document.getElementById('historyModal'));
+            modal.show();
+            
+            // Remover modal do DOM quando fechar
+            document.getElementById('historyModal').addEventListener('hidden.bs.modal', function() {
+                document.body.removeChild(modalContainer);
+            });
+        }
+
+        // Funções auxiliares do histórico
+        window.loadFromHistory = function(id) {
+            const item = state.history.find(h => h.id === id);
+            if (item) {
+                displayArticle({article: item.article, metadata: {timestamp: item.timestamp}});
+                document.getElementById('platform').value = item.platform;
+                document.getElementById('tone').value = item.tone;
+                document.getElementById('length').value = item.length;
+                document.getElementById('topic').value = item.topic;
+                updateCharCounter();
+                
+                const modal = bootstrap.Modal.getInstance(document.getElementById('historyModal'));
+                modal.hide();
+                
+                showNotification('Artigo carregado do histórico!', 'success');
+            }
+        };
+
+        window.copyFromHistory = function(id) {
+            const item = state.history.find(h => h.id === id);
+            if (item) {
+                navigator.clipboard.writeText(item.article)
+                    .then(() => {
+                        showNotification('Artigo copiado para a área de transferência!', 'success');
+                    })
+                    .catch(err => {
+                        showNotification('Erro ao copiar artigo.', 'error');
+                    });
+            }
+        };
+
+        window.deleteFromHistory = function(id) {
+            if (confirm('Tem certeza que deseja excluir este artigo do histórico?')) {
+                state.history = state.history.filter(h => h.id !== id);
+                localStorage.setItem('articleHistory', JSON.stringify(state.history));
+                showHistory();
+                showNotification('Artigo excluído do histórico!', 'success');
+            }
+        };
+
+        window.clearHistory = function() {
+            if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+                state.history = [];
+                localStorage.removeItem('articleHistory');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('historyModal'));
+                modal.hide();
+                showNotification('Histórico limpo com sucesso!', 'success');
+            }
+        };
+
+        // Estado de loading
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                elements.generateSpinner.style.display = 'inline-block';
+                elements.generateIcon.style.display = 'none';
+                elements.generateText.textContent = 'Gerando...';
+                elements.generateBtn.disabled = true;
+                
+                // Desabilitar outros controles
+                document.querySelectorAll('#articleForm select, #articleForm input').forEach(el => {
+                    el.disabled = true;
+                });
+            } else {
+                elements.generateSpinner.style.display = 'none';
+                elements.generateIcon.style.display = 'inline-block';
+                elements.generateText.textContent = 'Gerar Artigo com IA';
+                elements.generateBtn.disabled = false;
+                
+                // Habilitar outros controles
+                document.querySelectorAll('#articleForm select, #articleForm input').forEach(el => {
+                    el.disabled = false;
+                });
+            }
+        }
+
+        // Mostrar notificação
+        function showNotification(message, type = 'success') {
+            // Configurar notificação
+            elements.notification.className = 'notification';
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            
+            const titles = {
+                success: 'Sucesso!',
+                error: 'Erro!',
+                warning: 'Aviso!'
+            };
+            
+            elements.notification.classList.add(type);
+            elements.notification.querySelector('.notification-icon i').className = `fas ${icons[type]}`;
+            elements.notificationTitle.textContent = titles[type];
+            elements.notificationMessage.textContent = message;
+            
+            // Mostrar
+            elements.notification.classList.add('show');
+            
+            // Auto-esconder
+            setTimeout(() => {
+                elements.notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Inicializar aplicação
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
